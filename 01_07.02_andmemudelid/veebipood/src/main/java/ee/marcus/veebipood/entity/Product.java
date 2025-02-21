@@ -1,9 +1,6 @@
 package ee.marcus.veebipood.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +39,18 @@ public class Product {
     private String image; // .jpg
     private boolean active;
 
-}
+    //Parem pool tähistab kas on list<> või ainsus
+    //Vasak pool tähistab kas saan taaskasutada
+
+    //@ManyToMany
+    //@ManyToOne <-
+    //@OneToMany
+    //@OneToOne <-
+
+    // OneToOne --> User <-> Contact
+
+    @ManyToOne
+    private Category category;
 
 // public void setPrice(Double price) {
 //      this.price = price;
@@ -63,3 +71,5 @@ public class Product {
 //Double
 //Boolean
 //klassiväärtused, nende sees on ka funktsioonid.
+
+}
