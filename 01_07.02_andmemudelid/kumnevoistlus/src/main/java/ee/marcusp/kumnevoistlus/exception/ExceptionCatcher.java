@@ -8,8 +8,8 @@ import java.util.Date;
 
 @ControllerAdvice
 public class ExceptionCatcher {
-    @ExceptionHandler(Exception.class)
 
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleException(RuntimeException e){
         ErrorMessage error = new ErrorMessage();
         error.setMessage(e.getMessage());
