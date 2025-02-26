@@ -9,7 +9,7 @@ import java.util.Date;
 @ControllerAdvice
 public class ExceptionCatcher {
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(RuntimeException e){
         ErrorMessage error = new ErrorMessage();
         error.setMessage(e.getMessage());
