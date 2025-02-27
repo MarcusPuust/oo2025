@@ -7,7 +7,7 @@ public class CalculateService {
 
     // Kümnevõistluse punktide arvutamise skeem, sisenditeks on ala koos tulemusega
     public int calculatePoints(String event, Double score) {
-        double A, B, C; // A, B, C on ala kindlalt määratud konstandid
+        double A, B, C; // A, B, C on ala määratud konstandid
 
         switch (event.toLowerCase()) {
             case "100m run":

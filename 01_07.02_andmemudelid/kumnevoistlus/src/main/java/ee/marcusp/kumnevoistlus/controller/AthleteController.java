@@ -16,7 +16,7 @@ public class AthleteController {
     public List<Athlete> getAthletes() {
         return athleteRepository.findAll();
     }
-
+    // Sportlase lisamine nimi, riik ja vanus
     @PostMapping("athletes")
     public List<Athlete> addAthlete(@RequestBody Athlete athlete) {
         if (athlete.getName() == null || athlete.getName().isEmpty()) {
@@ -32,7 +32,7 @@ public class AthleteController {
         return athleteRepository.findAll();
     }
 
-
+    //Sportlase andmete muutmine samad (nimi, riik ja vanus)
     @PutMapping("athletes")
     public List<Athlete> editAthlete(@RequestBody Athlete athlete) {
         if (athlete.getName() == null || athlete.getName().isEmpty()) {
@@ -47,6 +47,7 @@ public class AthleteController {
         athleteRepository.save(athlete);
         return athleteRepository.findAll();
     }
+    //Sportlase kustutamine ID alusel
     @DeleteMapping("athletes/{id}")
     public List<Athlete> deleteAthlete(@PathVariable Long id) {
         athleteRepository.deleteById(id);
