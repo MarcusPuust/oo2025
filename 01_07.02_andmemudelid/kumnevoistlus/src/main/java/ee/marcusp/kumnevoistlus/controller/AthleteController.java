@@ -9,9 +9,10 @@ import java.util.List;
 
 @RestController
 public class AthleteController {
-    @Autowired
+    @Autowired //Controlleri ja Repository omavaheline sidumine
     AthleteRepository athleteRepository;
 
+    // Lisatud sportlaste pärimine (GET)
     @GetMapping("athletes")
     public List<Athlete> getAthletes() {
         return athleteRepository.findAll();
@@ -47,6 +48,7 @@ public class AthleteController {
         athleteRepository.save(athlete);
         return athleteRepository.findAll();
     }
+
     //Sportlase kustutamine ID alusel
     @DeleteMapping("athletes/{id}")
     public List<Athlete> deleteAthlete(@PathVariable Long id) {

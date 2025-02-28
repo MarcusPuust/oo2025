@@ -20,7 +20,7 @@ public class ResultController {
     private AthleteRepository athleteRepository;
 
     @Autowired
-    private CalculateService calculateService; // Lisatud CalculateService
+    private CalculateService calculateService;
 
     //Tulemuste postitamine event, score, athlete {id}
     @PostMapping("results")
@@ -32,7 +32,7 @@ public class ResultController {
             throw new RuntimeException("ERROR_SCORE_MUST_BE_POSITIVE");
         }
 
-        int points = calculateService.calculatePoints(result.getEvent(), result.getScore()); // Uus meetodikõne
+        int points = calculateService.calculatePoints(result.getEvent(), result.getScore());
         if (points <= 0) {
             throw new RuntimeException("ERROR_POINTS_MUST_BE_POSITIVE");
         }
@@ -55,7 +55,7 @@ public class ResultController {
             throw new RuntimeException("ERROR_ATHLETE_NOT_FOUND");
         }
     }
-
+    // Tulemuste pärimine
     @GetMapping("results")
     public List<Result> getAllResults() {
         return resultRepository.findAll();
