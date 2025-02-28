@@ -1,1 +1,15 @@
 Esimese kontrolltööga sarnaneva kolme alapunktiga ülesande lahendus
+
+Libisev keskmine
+
+* Tee uus Spring rakendus. Lisa entity (vabalt valitud nimega), mis hoiab enda sees nii automaatselt genereeritud ID’d (Long) kui ka arvu (int). Tee application.properties sisse andmebaasiühendus. Tee entity nimele vastav Repository ja Controller. Repository seo Controlleriga @Autowired abil. Tee üks API otspunkt arvude lisamiseks andmebaasi ning teine API otspunkt kõikide arvude vaatamiseks. Kontrolli töötamist Postmaniga.
+* Tee lisaks kolm API otspunkti: 1) tagastab numbrina kõikide andmebaasis olevate numbrite summa (täisnumber) 2) tagastab kõikide andmebaasis olevate arvude aritmeetilise keskmise (komakohaga) 3) tagastab kõige suurema numbri, mis andmebaasis leidub (täisnumber)
+* Koosta API otspunkt andmebaasis olevate arvude libiseva keskmise leidmiseks. Väljundiks on massiiv, mis on andmebaasis olevatest arvudest kahe elemendi võrra lühem ning mille iga elemendi väärtuseks on andmebaasis vastava elemendi ning selle järgmise ja ülejärgmise elemendi keskmine. 
+
+
+
+Hulknurk
+
+* Tee uus Spring rakendus. Lisa entity (vabalt valitud nimega), mis hoiab enda sees nii automaatselt genereeritud ID’d (Long) kui ka kahte koordinaati (int): x, y. Tee application.properties sisse andmebaasiühendus. Tee entity nimele vastav Repository ja Controller. Repository seo Controlleriga @Autowired abil. Tee üks API otspunkt koordinaatide lisamiseks andmebaasi ning teine API otspunkt kõikide koordinaatide vaatamiseks. Kontrolli töötamist Postmaniga.
+* Võimalda küsida kujundi ümbermõõt. Pane tähele, et kui on 2D kujund, siis peab olema andmebaasis vähemalt 3 koordinaati (kolmnurk). Väljasta veateade, kui on vähem kui 3 koordinaati.
+* Lisa käsklus kõikide x koordinaatide mingi kindla arvu võrra suurendamiseks või vähendamiseks (kõik suurenevad/vähenevad korraga selle arvu võrra). Tee sama y koordinaadile.
