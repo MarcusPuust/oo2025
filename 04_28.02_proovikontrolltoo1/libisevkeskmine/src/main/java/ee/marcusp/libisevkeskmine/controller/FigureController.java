@@ -72,4 +72,3 @@ public class FigureController {
         return movingAverages;
     }
 }
-//test
