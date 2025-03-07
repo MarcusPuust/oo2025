@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ConversionRepository extends JpaRepository<Conversion, Long> {
     List<Conversion> findByNumberId(Long numberId); // Tagasta kõik teisendused konkreetse numbri jaoks
+
+    List<Conversion> findByConversionType(String conversionType);
 }

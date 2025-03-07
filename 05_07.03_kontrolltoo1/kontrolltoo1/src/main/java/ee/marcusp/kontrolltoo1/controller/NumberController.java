@@ -29,8 +29,12 @@ public class NumberController {
     // GET: localhost:8080/conversions/history (Kõik teisendused)
     @GetMapping("conversions/history")
     public List<Conversion> getAllConversions() {
-        return conversionRepository.findAll();
+        // Sorteeri teisendused ID järgi (väiksemast suuremaks)
+        List<Conversion> conversions = conversionRepository.findAll();
+        conversions.sort((c1, c2) -> c1.getNumber().getId().compareTo(c2.getNumber().getId()));
+        return conversions;
     }
+
 
     // POST: localhost:8080/conversions (Uute numbrite lisamine)
     @PostMapping("conversions")
@@ -101,42 +105,26 @@ public class NumberController {
     }
 
 
-    // POST: localhost:8080/conversions/convert/decimal (Tagasi kümnendiks teisendamine)
+    
+    // POST: localhost:8080/conversions/convert/decimal (Tagasi kümnendsüsteemi teisendamine ainult binaarsetest väärtustest)
     @PostMapping("conversions/convert/decimal")
-    public List<String> convertBackToDecimal(@RequestBody Map<String, Object> request) {
-        if (!request.containsKey("conversionType")) {
-            throw new RuntimeException("ERROR_CONVERSION_TYPE_MISSING");
-        }
-
-        String conversionType = (String) request.get("conversionType");
-
-        List<Conversion> lastConversions = conversionRepository.findAll();
-        if (lastConversions.isEmpty()) {
-            throw new RuntimeException("ERROR_NO_CONVERSIONS_TO_CONVERT");
+    public List<String> convertBackToDecimal() {
+        // Võtame ainult need teisendused, mis on tehtud kümnendsüsteemist binaarsüsteemi
+        List<Conversion> binaryConversions = conversionRepository.findByConversionType("binary");
+        if (binaryConversions.isEmpty()) {
+            throw new RuntimeException("ERROR_NO_BINARY_CONVERSIONS_TO_CONVERT");
         }
 
         List<String> results = new ArrayList<>();
-        for (Conversion conversion : lastConversions) {
+        for (Conversion conversion : binaryConversions) {
             String convertedValue = conversion.getConvertedValue();
-            int decimalValue = 0;
 
-            switch (conversionType.toLowerCase()) {
-                case "binary":
-                    // Binaarsest väärtusest tagasi kümnendsüsteemi teisendamine
-                    decimalValue = Integer.parseInt(convertedValue, 2);
-                    break;
-                case "octal":
-                    // Kaheksandikväärtusest tagasi kümnendsüsteemi teisendamine
-                    decimalValue = Integer.parseInt(convertedValue, 8);
-                    break;
-                case "hexadecimal":
-                    // Kuueteistkümnendväärtusest tagasi kümnendsüsteemi teisendamine
-                    decimalValue = Integer.parseInt(convertedValue, 16);
-                    break;
-                default:
-                    throw new RuntimeException("PLEASE_PICK_CORRECT_CONVERSION_TYPE");
+            // Kontrollime, et binaarväärtus sisaldaks ainult 0 ja 1
+            if (!convertedValue.matches("[01]+")) {
+                throw new RuntimeException("ERROR_INVALID_BINARY_VALUE: " + convertedValue);
             }
 
+            int decimalValue = Integer.parseInt(convertedValue, 2);
             results.add("ID " + conversion.getNumber().getId() + ": Decimal: " + decimalValue);
         }
 
