@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //test
+
+@CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 public class ProductController {
 
