@@ -5,8 +5,11 @@ import ee.marcus.veebipood.entity.Product;
 import ee.marcus.veebipood.repository.CategoryRepository;
 import ee.marcus.veebipood.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //test
@@ -23,7 +26,7 @@ public class ProductController {
 
     // localhost:8080/products
     @GetMapping("products")
-    public List<Product> getProducts(){
+    public List<Product> getProducts() {
         return productRepository.findAll(); // SELECT * FROM extends JpaRepository<product>
     }
 
@@ -81,7 +84,7 @@ public class ProductController {
             throw new RuntimeException("ERROR_CANNOT_EDIT_WITHOUT_ID");
         }
         Product product = productRepository.findById(id).orElseThrow();
-        switch(field){
+        switch (field) {
             case "name" -> product.setName(value);
             case "price" -> {
                 if (product.getPrice() <= 0) {
@@ -105,7 +108,39 @@ public class ProductController {
         productRepository.save(product);
         return productRepository.findAll();
     }
+
+    // https://localhost:8080/category-products?categoryId=1
+//    @GetMapping("/category-products")
+//    public List<Product> getCategoryProducts(@RequestParam("categoryId") Long categoryid) {
+//        List<Product> products = productRepository.findAll(); // võtab kõik tooted andmebaasist
+//        List<Product> filteredProducts = new ArrayList<>(); // tühi List
+//
+//        // for (int i = 0; i < products.size(); i++) {
+//        //     if (products.get(i).getCategory().getId().equals(categoryId)) {
+//        //         filteredProducts.add(products.get(i));
+//        //     }
+//        // }
+//
+//        for (Product p : products) {
+//            // == --> kontrollib, kas vasak pool ja parem pool on identsed (viitavad samale objektile)
+//            // .equals --> kontrollib, kas vasaku ja parema poole väärtused on identsed.
+//            if (p.getCategory().getId().equals(categoryid)) {
+//                filteredProducts.add(p);
+//            }
+//        }
+//
+//        return filteredProducts; // tagastab ainult need tooted, millel on sobiv kategooria ID
+//    }
+    // https://localhost:8080/category-products?categoryId=1&page=0&size=2
+    @GetMapping("/category-products")
+    public Page<Product> getCategoryProducts(@RequestParam Long categoryId, Pageable pageable) {
+        if (categoryId == -1) {
+            return productRepository.findAll(pageable); // returniga funktsioon lõppeb, else blokki pole vaja
+        }
+        return productRepository.findByCategory_Id(categoryId, pageable);
+    }
 }
+
 
 
 // 1xx --> informatiivsed

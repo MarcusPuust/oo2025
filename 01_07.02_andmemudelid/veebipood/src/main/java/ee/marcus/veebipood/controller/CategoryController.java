@@ -35,3 +35,5 @@ public class CategoryController {
         return categoryRepository.findAll();
     }
 }
+
+// File --> Settings -->
