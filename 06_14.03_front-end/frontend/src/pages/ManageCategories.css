@@ -1,0 +1,20 @@
+.manage-categories {
+    text-align: center;
+  }
+
+  .manage-categories h2 {
+    margin-bottom: 30px; 
+  }
+  
+  .manage-categories table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 40%;
+  }
+  
+  .manage-categories th,
+  .manage-categories td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  

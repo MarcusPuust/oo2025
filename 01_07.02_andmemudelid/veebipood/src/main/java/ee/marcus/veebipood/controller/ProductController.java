@@ -1,6 +1,8 @@
 package ee.marcus.veebipood.controller;
 
+import ee.marcus.veebipood.entity.Category;
 import ee.marcus.veebipood.entity.Product;
+import ee.marcus.veebipood.repository.CategoryRepository;
 import ee.marcus.veebipood.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +18,16 @@ public class ProductController {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     // localhost:8080/products
     @GetMapping("products")
     public List<Product> getProducts(){
         return productRepository.findAll(); // SELECT * FROM extends JpaRepository<product>
     }
 
-    @PostMapping("products") //POSTMAN rakendus
+    @PostMapping("products")
     public List<Product> addProduct(@RequestBody Product product) {
         if (product.getId() != null) {
             throw new RuntimeException("ERROR_CANNOT_ADD_WITH_ID");
@@ -30,9 +35,18 @@ public class ProductController {
         if (product.getPrice() <= 0) {
             throw new RuntimeException("ERROR_PRICE_MUST_BE_POSITIVE");
         }
-        productRepository.save(product); //INSERT INTO products
+
+        // ⭐ Otsi kategooria ID järgi ja asenda see täisobjektiga
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            Category fullCategory = categoryRepository.findById(product.getCategory().getId())
+                    .orElseThrow(() -> new RuntimeException("ERROR_CATEGORY_NOT_FOUND"));
+            product.setCategory(fullCategory);
+        }
+
+        productRepository.save(product);
         return productRepository.findAll();
     }
+
 
     // DELETE localhost:8080/products/1
     @DeleteMapping("products/{id}")
