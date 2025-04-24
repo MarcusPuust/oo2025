@@ -8,3 +8,48 @@
   width: 100vw;
 }
 
+/* toodete tabel */
+
+.manage-products {
+  text-align: center;
+}
+
+.manage-products h2 {
+  margin-bottom: 30px; 
+}
+
+.manage-products table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 60%; 
+}
+
+.manage-products th,
+.manage-products td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+/* Kategooriate tabel */
+
+.manage-categories {
+  text-align: center;
+}
+
+.manage-categories h2 {
+  margin-bottom: 30px; 
+}
+
+.manage-categories table {
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 40%;
+}
+
+.manage-categories th,
+.manage-categories td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+
