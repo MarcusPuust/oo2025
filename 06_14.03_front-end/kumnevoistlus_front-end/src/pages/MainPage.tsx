@@ -67,7 +67,7 @@ function MainPage() {
   return (
     <div className="container mt-4">
       <div className="mb-3">
-        <label htmlFor="pageSizeSelect" className="form-label">Sportlasi lehel:</label>
+        <label htmlFor="pageSizeSelect" className="form-label">Athletes on page:</label>
         <select
           ref={countriesByPageRef}
           className="form-select w-auto d-inline-block ms-2"
@@ -78,30 +78,30 @@ function MainPage() {
           <option>3</option>
         </select>
 
-        <label htmlFor="countrySelect" className="form-label ms-3">Vali riik:</label>
+        <label htmlFor="countrySelect" className="form-label ms-3">Choose country:</label>
         <select
           id="countrySelect"
           className="form-select w-auto d-inline-block ms-2"
           value={activeCountry}
           onChange={(e) => showByCountry(e.target.value, 0)}
         >
-          <option value="">Kõik riigid</option>
+          <option value="">All countries</option>
           {countries.map(country => (
             <option key={country} value={country}>{country}</option>
           ))}
         </select>
       </div>
 
-      <div className="mb-3">Sportlasi kokku: {totalAthletes}</div>
+      <div className="mb-3">Total athletes: {totalAthletes}</div>
 
       {!selectedAthlete && (
         <table className="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>Nimi</th>
-              <th>Riik</th>
-              <th>Vanus</th>
-              <th>Kogupunktid</th>
+              <th>Name</th>
+              <th>Country</th>
+              <th>Age</th>
+              <th>Total Points</th>
             </tr>
           </thead>
           <tbody>
@@ -120,14 +120,14 @@ function MainPage() {
       {selectedAthlete && (
         <div className="mb-4">
           <h2>{selectedAthlete.name} tulemused</h2>
-          <button className="btn btn-outline-secondary mb-3" onClick={() => setSelectedAthlete(null)}>Tagasi</button>
+          <button className="btn btn-outline-secondary mb-3" onClick={() => setSelectedAthlete(null)}>Back</button>
 
           <table className="table table-hover">
             <thead>
               <tr>
-                <th>Ala</th>
-                <th>Tulemus</th>
-                <th>Punktid</th>
+                <th>Event</th>
+                <th>Score</th>
+                <th>Points</th>
               </tr>
             </thead>
             <tbody>
@@ -145,9 +145,9 @@ function MainPage() {
 
       {!selectedAthlete && (
         <div className="d-flex align-items-center gap-3">
-          <button className="btn btn-light" disabled={page === 0} onClick={() => updatePage(page - 1)}>Eelmine</button>
+          <button className="btn btn-light" disabled={page === 0} onClick={() => updatePage(page - 1)}>Previous</button>
           <span>{page + 1}</span>
-          <button className="btn btn-light" disabled={page >= totalPages - 1} onClick={() => updatePage(page + 1)}>Järgmine</button>
+          <button className="btn btn-light" disabled={page >= totalPages - 1} onClick={() => updatePage(page + 1)}>Next</button>
         </div>
       )}
     </div>

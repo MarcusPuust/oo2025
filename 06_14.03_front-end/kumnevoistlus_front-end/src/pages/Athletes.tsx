@@ -49,7 +49,7 @@ function Athletes() {
 
   return (
     <div className="container mt-4">
-      <h2>Võistlejate haldamine</h2>
+    <h2>Athlete Management</h2>
 
       <div className="mb-4">
         <label className="form-label">Name</label>

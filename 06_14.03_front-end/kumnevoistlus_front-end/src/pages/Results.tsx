@@ -72,16 +72,16 @@ function Results() {
 
   return (
     <div className="container mt-4">
-      <h2>Tulemuste haldamine</h2>
+    <h2>Results Management</h2>
 
       <div className="mb-3">
-        <label className="form-label">Vali sportlane</label>
+        <label className="form-label">Choose athlete</label>
         <select
           className="form-select"
           onChange={(e) => setSelectedAthleteId(Number(e.target.value))}
           value={selectedAthleteId ?? ''}
         >
-          <option value="" disabled>-- Vali sportlane --</option>
+          <option value="" disabled>-- Choose athlete --</option>
           {athletes.map(athlete => (
             <option key={athlete.id} value={athlete.id}>{athlete.name}</option>
           ))}
