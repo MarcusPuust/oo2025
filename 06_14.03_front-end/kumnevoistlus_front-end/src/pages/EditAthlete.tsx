@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athletes";
 import { useNavigate, useParams } from "react-router-dom";
-//import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function EditAthlete() {
   const { athleteId } = useParams();
@@ -36,8 +38,10 @@ function EditAthlete() {
     })
       .then(res => res.json())
       .then(() => {
-        navigate("/athletes");
+        toast.success("Athlete updated successfully!");
+        setTimeout(() => navigate("/athletes"), 10000); 
       });
+      
   };
 
   if (athlete === undefined) {
@@ -58,7 +62,7 @@ function EditAthlete() {
       <input ref={totalPointsRef} defaultValue={athlete?.totalPoints} type="number" /> <br />
       <br />
       <button onClick={editAthlete}>Edit athlete</button>
-      {/* <ToastContainer /> */}
+      <ToastContainer /> 
     </div>
   );
 }

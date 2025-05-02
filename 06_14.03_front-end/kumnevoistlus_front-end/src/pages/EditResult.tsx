@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Result } from "../models/Results";
 import { useNavigate, useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer,  toast } from "react-toastify";
 
 function EditResult() {
   const { resultId } = useParams();
@@ -34,8 +34,9 @@ function EditResult() {
     })
       .then(res => res.json())
       .then(() => {
-        navigate("/results");
-      });
+      toast.success("Result updated successfully!");
+        setTimeout(() => navigate("/results"), 10000); 
+              });
   };
 
   if (result === undefined) {
