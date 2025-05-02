@@ -88,7 +88,7 @@ function Results() {
           <label>Score</label> <br />
           <input ref={scoreRef} type="text" /> <br />
           <br />
-          <button onClick={addResult}>Lisa tulemus</button>
+          <button onClick={addResult}>Add result</button>
           <br /><br />
         </>
       )}
@@ -115,7 +115,7 @@ function Results() {
                 <td>
                   <button onClick={() => deleteResult(result.id)}>Delete</button>
                   <Link to={"/edit-result/" + result.id}>
-                    <button>Muuda</button>
+                    <button>Edit</button>
                   </Link>
                 </td>
               </tr>

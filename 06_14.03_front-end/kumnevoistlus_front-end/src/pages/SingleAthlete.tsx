@@ -19,7 +19,7 @@ function SingleAthlete() {
 
   return (
     <div>
-      <button onClick={() => navigate(-1)}>Tagasi</button> 
+      <button onClick={() => navigate(-1)}>Back</button> 
       <br /><br />
 
       <div>Name: {athlete.name}</div>

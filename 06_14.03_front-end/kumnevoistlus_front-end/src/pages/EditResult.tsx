@@ -45,14 +45,14 @@ function EditResult() {
 
   return (
     <div>
-      <button onClick={() => navigate(-1)}>Tagasi</button>
+      <button onClick={() => navigate(-1)}>Back</button>
       <br /><br />
       <label>Event</label> <br />
       <input ref={eventRef} defaultValue={result.event} type="text" /> <br />
       <label>Score</label> <br />
       <input ref={scoreRef} defaultValue={result.score} type="text" /> <br />
       <br />
-      <button onClick={editResult}>Muuda tulemust</button>
+      <button onClick={editResult}>Edit Result</button>
       <ToastContainer />
     </div>
   );

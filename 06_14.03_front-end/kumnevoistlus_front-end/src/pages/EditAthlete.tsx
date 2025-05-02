@@ -50,7 +50,7 @@ function EditAthlete() {
 
   return (
     <div>
-      <button onClick={() => navigate(-1)}>Tagasi</button>
+      <button onClick={() => navigate(-1)}>Back</button>
       <br /><br />
       <label>Name</label> <br />
       <input ref={nameRef} defaultValue={athlete?.name} type="text" /> <br />

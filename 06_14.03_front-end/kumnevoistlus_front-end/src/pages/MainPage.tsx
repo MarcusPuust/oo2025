@@ -82,7 +82,7 @@ function MainPage() {
           <div>{athlete.age}</div>
           <div>{athlete.totalPoints}</div>
           <Link to={"/athlete/" + athlete.id}>
-            <button>Vaata sportlast</button>
+            <button>View athlete</button>
           </Link>
         </div>
       ))}
