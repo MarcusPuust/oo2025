@@ -1,9 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import  './i18n';
 import 'bootstrap/dist/css/bootstrap.min.css'; // className="accordion"
 import './index.css'//.accordion {width: 500px !important;}
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
+import 'leaflet/dist/leaflet.css';
 
 // navigeerimiseks (URLde vahetamiseks):
 // 1. npm i react-router-dom

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Category } from '../models/Category'; // ../ --> kausta võrra ülespoole
 import { Product } from '../models/Product';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // React Hook (Reacti erikood)
 // 1. peab importima
@@ -11,6 +12,7 @@ import { Link } from 'react-router-dom';
 // 5. ei tohi olla funktsioonide sees loodud
 
 function MainPage() {
+  const { t } = useTranslation();
   // Järgmine kord:
   // Leheküljed ---> Pageable (Hibernate)
   // Kategooria alusel filtreerimine (custom päring Repository's - Hibernate)
@@ -83,7 +85,7 @@ function MainPage() {
         <option>2</option>
         <option>3</option>
       </select>
-      <button onClick={() => showByCategory(-1, 0)}>Kõik kategooriad</button>
+      <button onClick={() => showByCategory(-1, 0)}>{t("home.all-categories")}</button>
       {kategooriad.map(kategooria => 
       <button key={kategooria.id} onClick={() => showByCategory(kategooria.id, 0)}>
         {kategooria.name}

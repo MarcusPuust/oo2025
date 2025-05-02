@@ -51,5 +51,11 @@
   border: 1px solid black;
   padding: 8px;
 }
-
+ 
+/* panen punkti ette, sest pöördun className poole see ei tööta praegu, katki. */
+.map {
+  height: 300px;
+  margin: 3%;
+  border-radius: 20px;
+}
 

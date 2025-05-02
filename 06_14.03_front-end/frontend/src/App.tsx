@@ -14,6 +14,8 @@ import Orders from './pages/Orders';
 import Login from './pages/Login';
 import SingleProduct from './pages/SingleProduct';
 import EditProduct from './pages/EditProduct';
+import Map from './pages/Map';
+
 
 
 
@@ -44,6 +46,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/arrays" element={<Arrayd />} />
         <Route path="/product/:productId" element={<SingleProduct/>} />
+        <Route path="/map" element={<Map />} />
 
         <Route path="/*" element={<div> Page not found</div>} />
 
