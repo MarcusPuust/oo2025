@@ -57,15 +57,26 @@ public class AthleteController {
         athleteRepository.deleteById(id);
         return athleteRepository.findAll();
     }
+    @GetMapping("athletes/{id}")
+    public Athlete getAthleteById(@PathVariable Long id) {
+        return athleteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Athlete not found"));
+    }
+
 
     // Uus päring riigi ja lehekülje alusel
     @GetMapping("athletes-country")
     public Page<Athlete> getAthletesByCountry(
             @RequestParam String country,
             @RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam int size,
+            @RequestParam(defaultValue = "name,asc") String sort) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        String[] sortParams = sort.split(",");
+        Pageable pageable = PageRequest.of(page, size,
+                sortParams[1].equalsIgnoreCase("desc") ? org.springframework.data.domain.Sort.by(sortParams[0]).descending() : org.springframework.data.domain.Sort.by(sortParams[0]).ascending()
+        );
+
         if (country == null || country.isEmpty()) {
             return athleteRepository.findAll(pageable);
         } else {

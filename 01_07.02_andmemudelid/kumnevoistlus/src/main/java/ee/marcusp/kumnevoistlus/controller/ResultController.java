@@ -63,6 +63,13 @@ public class ResultController {
         return resultRepository.findByAthlete_Country(country);
     }
 
+    @GetMapping("results/{id}")
+    public Result getResultById(@PathVariable Long id) {
+        return resultRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Result not found"));
+    }
+
+
     @PutMapping("results")
     public List<Result> updateResult(@RequestBody Result result) {
         if (result.getId() == null) {

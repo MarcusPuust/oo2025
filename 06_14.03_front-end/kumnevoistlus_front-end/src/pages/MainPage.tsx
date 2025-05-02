@@ -1,157 +1,97 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athletes";
-import { Result } from "../models/Results";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 function MainPage() {
   const [athletes, setAthletes] = useState<Athlete[]>([]);
-  const [results, setResults] = useState<Result[]>([]);
   const [totalAthletes, setTotalAthletes] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [countriesByPage, setCountriesByPage] = useState(1);
   const [page, setPage] = useState(0);
   const [activeCountry, setActiveCountry] = useState("");
   const [countries, setCountries] = useState<string[]>([]);
-  const [selectedAthlete, setSelectedAthlete] = useState<Athlete | null>(null);
-
+  const [sort, setSort] = useState("name,asc");
   const countriesByPageRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
     fetch("http://localhost:8080/athletes")
       .then(res => res.json())
-      .then((json: Athlete[]) => {
-        setCountries([...new Set(json.map((a: Athlete) => a.country))]);
-      });
+      .then((json: Athlete[]) => setCountries([...new Set(json.map((a: Athlete) => a.country))]))
   }, []);
 
   const showByCountry = useCallback((athleteCountry: string, currentPage: number) => {
     setActiveCountry(athleteCountry);
     setPage(currentPage);
-    setSelectedAthlete(null);
-
-    fetch(
-      `http://localhost:8080/athletes-country?country=${athleteCountry}&size=${countriesByPage}&page=${currentPage}`
+    fetch("http://localhost:8080/athletes-country?country=" + athleteCountry + 
+      "&size=" + countriesByPage + 
+      "&page=" + currentPage + 
+      "&sort=" + sort
     )
       .then(res => res.json())
       .then(json => {
         setAthletes(json.content);
         setTotalAthletes(json.totalElements);
         setTotalPages(json.totalPages);
-      });
-
-    fetch(`http://localhost:8080/results-by-country?country=${athleteCountry}`)
-      .then(res => res.json())
-      .then((json: Result[]) => {
-        setResults(json);
-      });
-  }, [countriesByPage]);
+      })
+  }, [countriesByPage, sort]);
 
   useEffect(() => {
-    showByCountry("", 0);
-  }, [showByCountry]);
+    showByCountry(activeCountry, 0);
+  }, [showByCountry, activeCountry, sort]);
+  
 
   function updatePage(newPage: number) {
     showByCountry(activeCountry, newPage);
   }
 
-  function handleAthleteClick(athlete: Athlete) {
-    setSelectedAthlete(athlete);
-    fetch(`http://localhost:8080/results-by-country?country=${athlete.country}`)
-      .then(res => res.json())
-      .then((json: Result[]) => {
-        const filtered = json.filter(r => r.athlete.id === athlete.id);
-        setResults(filtered);
-      });
-  }
-
   return (
-    <div className="container mt-4">
-      <div className="mb-3">
-        <label htmlFor="pageSizeSelect" className="form-label">Athletes on page:</label>
-        <select
-          ref={countriesByPageRef}
-          className="form-select w-auto d-inline-block ms-2"
-          onChange={() => setCountriesByPage(Number(countriesByPageRef.current?.value))}
-        >
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-        </select>
+    <div>
+      <button onClick={() => setSort("name,asc")}>Sorteeri A-Z</button>
+      <button onClick={() => setSort("name,desc")}>Sorteeri Z-A</button>
+      <button onClick={() => setSort("age,asc")}>Sorteeri vanuse järgi kasvav</button>
+      <button onClick={() => setSort("age,desc")}>Sorteeri vanuse järgi kahanev</button>
+      <button onClick={() => setSort("totalPoints,asc")}>Sorteeri punktide järgi kasvav</button>
+      <button onClick={() => setSort("totalPoints,desc")}>Sorteeri punktide järgi kahanev</button>
 
-        <label htmlFor="countrySelect" className="form-label ms-3">Choose country:</label>
-        <select
-          id="countrySelect"
-          className="form-select w-auto d-inline-block ms-2"
-          value={activeCountry}
-          onChange={(e) => showByCountry(e.target.value, 0)}
-        >
-          <option value="">All countries</option>
-          {countries.map(country => (
-            <option key={country} value={country}>{country}</option>
-          ))}
-        </select>
-      </div>
+      <select 
+        ref={countriesByPageRef}
+        onChange={() => setCountriesByPage(Number(countriesByPageRef.current?.value))}
+      >
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+      </select>      
 
-      <div className="mb-3">Total athletes: {totalAthletes}</div>
+      <div>Sportlasi kokku: {totalAthletes}</div>
 
-      {!selectedAthlete && (
-        <table className="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Country</th>
-              <th>Age</th>
-              <th>Total Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {athletes.map(athlete => (
-              <tr key={athlete.id} onClick={() => handleAthleteClick(athlete)} style={{ cursor: 'pointer' }}>
-                <td>{athlete.name}</td>
-                <td>{athlete.country}</td>
-                <td>{athlete.age}</td>
-                <td>{athlete.totalPoints}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <button onClick={() => showByCountry("", 0)}>All athletes</button>
 
-      {selectedAthlete && (
-        <div className="mb-4">
-          <h2>{selectedAthlete.name} tulemused</h2>
-          <button className="btn btn-outline-secondary mb-3" onClick={() => setSelectedAthlete(null)}>Back</button>
+      {countries.map(country => (
+        <button key={country} onClick={() => showByCountry(country, 0)}>
+          {country}
+        </button>
+      ))}
 
-          <table className="table table-hover">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Score</th>
-                <th>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map(result => (
-                <tr key={result.id}>
-                  <td>{result.event}</td>
-                  <td>{result.score}</td>
-                  <td>{result.points}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      <br />
+      <br />
+
+      {athletes.map(athlete => (
+        <div key={athlete.id} className="athlete-card">
+          <div className="athlete-name">{athlete.name}</div>
+          <div>{athlete.country}</div>
+          <div>{athlete.age}</div>
+          <div>{athlete.totalPoints}</div>
+          <Link to={"/athlete/" + athlete.id}>
+            <button>Vaata sportlast</button>
+          </Link>
         </div>
-      )}
+      ))}
 
-      {!selectedAthlete && (
-        <div className="d-flex align-items-center gap-3">
-          <button className="btn btn-light" disabled={page === 0} onClick={() => updatePage(page - 1)}>Previous</button>
-          <span>{page + 1}</span>
-          <button className="btn btn-light" disabled={page >= totalPages - 1} onClick={() => updatePage(page + 1)}>Next</button>
-        </div>
-      )}
+      <button disabled={page === 0} onClick={() => updatePage(page - 1)}>Eelmine</button>
+      <span>{page + 1}</span>
+      <button disabled={page >= totalPages - 1} onClick={() => updatePage(page + 1)}>Järgmine</button>
     </div>
-  );
+  )
 }
 
 export default MainPage;

@@ -131,7 +131,8 @@ public class ProductController {
 //
 //        return filteredProducts; // tagastab ainult need tooted, millel on sobiv kategooria ID
 //    }
-    // https://localhost:8080/category-products?categoryId=1&page=0&size=2
+    // https://localhost:8080/category-products?categoryId=1&page=0&size=2&sort=name,asc
+    // https://localhost:8080/category-products?categoryId=1&page=0&size=2&sort=price,desc
     @GetMapping("/category-products")
     public Page<Product> getCategoryProducts(@RequestParam Long categoryId, Pageable pageable) {
         if (categoryId == -1) {
