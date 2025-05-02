@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // ← lisasime useNavigate
+import { useNavigate, useParams } from "react-router-dom"; 
 import { Athlete } from "../models/Athletes";
 
 function SingleAthlete() {
@@ -19,7 +19,7 @@ function SingleAthlete() {
 
   return (
     <div>
-      <button onClick={() => navigate(-1)}>Tagasi</button> {/* ← Tagasi nupp */}
+      <button onClick={() => navigate(-1)}>Tagasi</button> 
       <br /><br />
 
       <div>Name: {athlete.name}</div>
