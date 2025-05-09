@@ -23,13 +23,10 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
-  /* place-items: center; */
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -67,6 +64,23 @@ button:focus-visible {
   }
 }
 
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ← Lisa see rida */
+  min-height: 100vh;       /* ← Lisa see ka, et võtaks kogu kõrguse */
+}
 
+.full-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 25vh;
+  text-align: center;
+}
 
-
+input {
+  max-width: 300px;
+}
