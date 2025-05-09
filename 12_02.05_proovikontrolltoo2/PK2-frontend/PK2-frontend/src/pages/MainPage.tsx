@@ -1,69 +1,102 @@
-import { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import "../index.css";
-import type { Word } from '../models/Word';
-
+import { useCallback, useEffect, useState, useRef } from 'react'
+import type { Manager } from '../models/Manager'
+import type { Word } from '../models/Word'
+import { Link } from 'react-router-dom';
 
 function MainPage() {
-    const [words, setWords] = useState<Word[]>([]);
-  
-    const typeRef = useRef<HTMLInputElement>(null);
-    const descRef = useRef<HTMLInputElement>(null);
-  
-    useEffect(() => {
-      fetch("http://localhost:8080/words")
-        .then(res => res.json())
-        .then(json => setWords(json));
-    }, []);
-  
-    const addWord = () => {
-      const newWord = {
-        type: typeRef.current?.value,
-        description: descRef.current?.value,
-      };
-  
-      fetch("http://localhost:8080/words", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newWord),
-      })
-        .then(res => res.json())
-        .then(json => {
-          setWords(json);
-          if (typeRef.current) typeRef.current.value = "";
-          if (descRef.current) descRef.current.value = "";
-        });
-    };
-  
-    return (
-        <div className="full-center">
-          <div className="mb-4">
-            <h4>Lisa uus sõna</h4>
-            <input type="text" ref={typeRef} placeholder="Sõna" className="form-control mb-2" />
-            <input type="text" ref={descRef} placeholder="Tähendus" className="form-control mb-2" />
-            <button className="btn btn-success" onClick={addWord}>Lisa</button>
-          </div>
-      
-          <h2>Sõnastik</h2>
-          {words.map(word => (
-            <div key={word.typeID} className="mb-2">
-              <strong>{word.type}</strong>
-              <Link to={`/word/${word.typeID}`}>
-                <button className="btn btn-primary btn-sm ms-2">Vaata lähemalt</button>
-              </Link>
-              <Link to={`/edit-word/${word.typeID}`}>
-                <button className="btn btn-warning btn-sm ms-2">Muuda</button>
-              </Link>
+  const [managers, setManagers] = useState<Manager[]>([]);
+  const [words, setWords] = useState<Word[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalWords, setTotalWords] = useState(0);
+  const [wordsByPage, setWordsByPage] = useState(1);
+  const [page, setPage] = useState(0);
+  const [sort, setSort] = useState("type,asc");
+  const [activeManager, setActiveManager] = useState(-1);
 
-            </div>
-          ))}
-        </div>
-      );
-      
+  const wordsByPageRef = useRef<HTMLSelectElement>(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/manager")
+      .then(res => res.json())
+      .then(json => setManagers(json));
+  }, []);
+
+  const showByManager = useCallback((managerId: number, currentPage: number) => {
+    setActiveManager(managerId);
+    setPage(currentPage);
+    fetch(`http://localhost:8080/words-manager?managerId=${managerId}&size=${wordsByPage}&page=${currentPage}&sort=${sort}`)
+      .then(res => res.json())
+      .then(json => {
+        setWords(json.content);
+        setTotalWords(json.totalElements);
+        setTotalPages(json.totalPages);
+      });
+  }, [wordsByPage, sort]);
+
+  useEffect(() => {
+    showByManager(activeManager, 0);
+  }, [showByManager, activeManager, wordsByPage, sort]);
+
+  function updatePage(newPage: number) {
+    showByManager(activeManager, newPage);
   }
-  
-  export default MainPage;
+
+  return (
+    <div className="container mt-4">
+      <div className="d-flex flex-wrap align-items-center gap-3 mb-4">
+        <div>
+          <h5>Sorteeri</h5>
+          <button onClick={() => setSort("type,asc")} className="btn btn-outline-primary me-2">A-Z</button>
+          <button onClick={() => setSort("type,desc")} className="btn btn-outline-primary">Z-A</button>
+        </div>
+
+        <div>
+          <h5>Sõnu lehel</h5>
+          <select ref={wordsByPageRef} onChange={() => setWordsByPage(Number(wordsByPageRef.current?.value))} className="form-select w-auto">
+            <option>1</option>
+            <option>3</option>
+            <option>5</option>
+          </select>
+        </div>
+
+        <div>
+          <h5>Haldajad</h5>
+          <button onClick={() => showByManager(-1, 0)} className="btn btn-outline-secondary me-1">Kõik</button>
+          {managers.map(manager =>
+            <button key={manager.id} onClick={() => showByManager(manager.id, 0)} className="btn btn-outline-secondary me-1">
+              {manager.name}
+            </button>
+          )}
+        </div>
+      </div>
+
+      <h4>Kokku sõnu: {totalWords}</h4>
+      <div className="mb-3">
+        {words.map(word =>
+          <div key={word.id} className="mb-3 border-bottom pb-2">
+            <strong>{word.type}</strong>
+            <Link to={'/word/' + word.id}>
+              <button className="btn btn-sm btn-primary ms-2">Vaata tähendust</button>
+            </Link>
+            <br />
+            Haldaja:
+            <Link to={'/manager/' + word.manager?.id}>
+              <button className="btn btn-sm btn-secondary ms-2">{word.manager?.name}</button>
+            </Link>
+          </div>
+        )}
+      </div>
+
+      <div className="d-flex align-items-center gap-3">
+        <button disabled={page === 0} onClick={() => updatePage(page - 1)} className="btn btn-secondary">Eelmine</button>
+        <span>Leht {page + 1}</span>
+        <button disabled={page + 1 >= totalPages} onClick={() => updatePage(page + 1)} className="btn btn-secondary">Järgmine</button>
+      </div>
+    </div>
+  )
+}
+
+export default MainPage;
+
 
 

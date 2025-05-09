@@ -1,64 +1,77 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import type { Word } from "../models/Word";
+import type { Manager } from "../models/Manager";
+import { ToastContainer, toast } from "react-toastify";
 
 function EditWord() {
-  const { id } = useParams();
+  const { wordId } = useParams();
   const navigate = useNavigate();
-  const [word, setWord] = useState<Word | null>(null);
+  const [word, setWord] = useState<Word>();
+  const [managers, setManagers] = useState<Manager[]>([]);
 
   const typeRef = useRef<HTMLInputElement>(null);
-  const descRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const managerRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/words/${id}`)
+    fetch(`http://localhost:8080/words/${wordId}`)
       .then(res => res.json())
       .then(json => setWord(json));
-  }, [id]);
+  }, [wordId]);
 
-  const updateWord = () => {
-    const updated = {
-      typeID: Number(id),
+  useEffect(() => {
+    fetch("http://localhost:8080/manager")
+      .then(res => res.json())
+      .then(json => setManagers(json));
+  }, []);
+
+  const editWord = () => {
+    const modifiedWord = {
+      id: wordId,
       type: typeRef.current?.value,
-      description: descRef.current?.value,
+      description: descriptionRef.current?.value,
+      manager: {
+        id: Number(managerRef.current?.value)
+      }
     };
 
     fetch("http://localhost:8080/words", {
       method: "PUT",
+      body: JSON.stringify(modifiedWord),
       headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updated),
+        "Content-Type": "application/json"
+      }
     })
       .then(res => res.json())
-      .then(() => navigate("/")); // suuna tagasi avalehele
+      .then(json => {
+        if (json.message && json.status && json.timestamp) {
+          toast.error(json.message);
+        } else {
+          navigate("/manage/words");
+        }
+      });
   };
 
-  if (!word) {
-    return <div>Laen andmeid...</div>;
-  }
+  if (!word) return <div>Sõna ei leitud</div>;
 
   return (
-    <div className="full-center">
-      <h2>Muuda sõna</h2>
-      <input
-        type="text"
-        defaultValue={word.type}
-        ref={typeRef}
-        className="form-control mb-2"
-      />
-      <input
-        type="text"
-        defaultValue={word.description}
-        ref={descRef}
-        className="form-control mb-2"
-      />
-      <button className="btn btn-primary" onClick={updateWord}>
-        Salvesta muudatused
-      </button>
-      <button className="btn btn-secondary mt-4" onClick={() => navigate("/")}>
-        ← Tagasi
-      </button>
+    <div>
+      <h3>Muuda sõna</h3>
+      <label>Sõna</label><br />
+      <input ref={typeRef} defaultValue={word.type} type="text" /> <br />
+      <label>Tähendus</label><br />
+      <input ref={descriptionRef} defaultValue={word.description} type="text" /> <br />
+      <label>Haldaja</label><br />
+      <select ref={managerRef} defaultValue={word.manager?.id}>
+        {managers.map(manager => (
+          <option key={manager.id} value={manager.id}>
+            {manager.name}
+          </option>
+        ))}
+      </select><br />
+      <button onClick={editWord}>Salvesta</button>
+      <ToastContainer />
     </div>
   );
 }

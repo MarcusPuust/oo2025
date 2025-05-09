@@ -2,46 +2,49 @@ package ee.marcus.PKontrolltoo2.controller;
 
 import ee.marcus.PKontrolltoo2.entity.Word;
 import ee.marcus.PKontrolltoo2.repository.WordRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@CrossOrigin(origins = "http://localhost:5173/")
-@RequestMapping("/words")
+
 public class WordController {
+    @Autowired
+    WordRepository wordRepository;
 
-    private final WordRepository wordRepository;
+    @GetMapping("words")
+    public List<Word> getWords() {return wordRepository.findAll();}
 
-    public WordController(WordRepository wordRepository) {
-        this.wordRepository = wordRepository;
-    }
-
-    @GetMapping
-    public List<Word> getAllWords() {
-        return wordRepository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Word getWordById(@PathVariable Long id) {
-        return wordRepository.findById(id).orElse(null);
-    }
-
-    @PostMapping
+    @PostMapping("words")
     public List<Word> addWord(@RequestBody Word word) {
+
         wordRepository.save(word);
         return wordRepository.findAll();
     }
-
-    @PutMapping
-    public List<Word> updateWord(@RequestBody Word word) {
-        wordRepository.save(word);
-        return wordRepository.findAll();
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("word/{id}")
     public List<Word> deleteWord(@PathVariable Long id) {
         wordRepository.deleteById(id);
         return wordRepository.findAll();
+    }
+    @PutMapping("words")
+    public List<Word> editWord(@RequestBody Word word) {
+        wordRepository.save(word);
+        return wordRepository.findAll();
+    }
+    @GetMapping("words/{id}")
+    public Word getWord(@PathVariable Long id) {
+        return wordRepository.findById(id).orElseThrow();
+    }
+
+    @GetMapping("words-manager")
+    public Page<Word> getWordsManager(@RequestParam Long managerId, Pageable pageable) {
+        if (managerId == -1){
+            return wordRepository.findAll(pageable);
+        }
+        return wordRepository.findByManager_Id(managerId, Pageable.unpaged());
     }
 }

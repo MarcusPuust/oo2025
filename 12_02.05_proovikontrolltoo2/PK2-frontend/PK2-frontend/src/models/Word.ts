@@ -1,5 +1,8 @@
+import type { Manager } from "./Manager"
+
 export type Word = {
-    typeID: number;
-    type: string;
-    description: string;
-  };
+    id: number,
+    type: string,
+    description: string,
+    manager: Manager
+}
