@@ -39,31 +39,31 @@ function MainPage() {
   
     return (
         <div className="full-center">
-          <h2>Sõnastik</h2>
-      
-          {/* Lisa uus sõna vorm – ENNE */}
-          <div className="mt-4">
+          <div className="mb-4">
             <h4>Lisa uus sõna</h4>
             <input type="text" ref={typeRef} placeholder="Sõna" className="form-control mb-2" />
             <input type="text" ref={descRef} placeholder="Tähendus" className="form-control mb-2" />
             <button className="btn btn-success" onClick={addWord}>Lisa</button>
           </div>
       
-          {/* Sõnade nimekiri – PÄRAST */}
-          <div className="mt-5">
-            {words.map(word => (
-              <div key={word.typeID} className="mb-2">
-                <strong>{word.type}</strong>
-                <Link to={`/word/${word.typeID}`}>
-                  <button className="btn btn-primary btn-sm ms-2">Vaata lähemalt</button>
-                </Link>
-              </div>
-            ))}
-          </div>
+          <h2>Sõnastik</h2>
+          {words.map(word => (
+            <div key={word.typeID} className="mb-2">
+              <strong>{word.type}</strong>
+              <Link to={`/word/${word.typeID}`}>
+                <button className="btn btn-primary btn-sm ms-2">Vaata lähemalt</button>
+              </Link>
+              <Link to={`/edit-word/${word.typeID}`}>
+                <button className="btn btn-warning btn-sm ms-2">Muuda</button>
+              </Link>
+
+            </div>
+          ))}
         </div>
       );
       
   }
   
   export default MainPage;
+
 
