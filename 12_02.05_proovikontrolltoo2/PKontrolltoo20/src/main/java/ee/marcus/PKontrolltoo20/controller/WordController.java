@@ -1,4 +1,4 @@
-package ee.marcus.PKontrolltoo2.controller;
+package ee.marcus.PKontrolltoo20.controller;
 
 import ee.marcus.PKontrolltoo20.entity.Word;
 import ee.marcus.PKontrolltoo20.repository.WordRepository;

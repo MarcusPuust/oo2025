@@ -1,1 +1,0 @@
-Kümnevõistlusele lihtne front-end. Kõik back-endis tehtud peab olema kasutusel front-endis.

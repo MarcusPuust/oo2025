@@ -1,4 +1,4 @@
-package ee.marcus.PKontrolltoo2.repository;
+package ee.marcus.PKontrolltoo20.repository;
 
 import ee.marcus.PKontrolltoo20.entity.Word;
 import org.springframework.data.domain.Page;
@@ -13,5 +13,3 @@ public interface WordRepository extends JpaRepository<Word, Long> {
 
     Page<Word> findByManager_Id(Long managerId, Pageable pageable);
 }
-
-
