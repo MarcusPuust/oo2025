@@ -15,12 +15,12 @@ function SinglePost() {
       .then(json => setPost(json));
   }, [id]);
 
-  if (!post) return <div>Laen...</div>;
+  if (!post) return <div className="container mt-4 narrow-container">Laen...</div>;
 
   return (
-    <div className="container mt-4">
-      <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>← Tagasi</button>
-      <h3>{post.title}</h3>
+    <div className="container mt-4 narrow-container">
+      <button className="btn btn-secondary back-button" onClick={() => navigate(-1)}>← Tagasi</button>
+      <h3 className="page-title">{post.title}</h3>
       <p>{post.body}</p>
       <p><strong>Kasutaja:</strong> {post.user?.name}</p>
     </div>
@@ -28,4 +28,5 @@ function SinglePost() {
 }
 
 export default SinglePost;
+
 

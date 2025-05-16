@@ -20,9 +20,9 @@ function UserPosts() {
   }, [id]);
 
   return (
-    <div className="container mt-4">
-      <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>← Tagasi</button>
-      <h3>Postitused kasutajalt: {user?.name}</h3>
+    <div className="container mt-4 narrow-container">
+      <button className="btn btn-secondary back-button" onClick={() => navigate(-1)}>← Tagasi</button>
+      <h3 className="page-title">Postitused kasutajalt: {user?.name}</h3>
       <ul className="list-group">
         {posts.map(post => (
           <li key={post.id} className="list-group-item">

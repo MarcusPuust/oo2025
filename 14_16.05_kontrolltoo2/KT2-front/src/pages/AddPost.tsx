@@ -37,17 +37,15 @@ function AddPost() {
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Lisa postitus</h3>
-      <input ref={titleRef} placeholder="Pealkiri" className="form-control mb-2" />
-      <input ref={bodyRef} placeholder="Sisu" className="form-control mb-2" />
-
-      <select ref={userRef} className="form-select mb-3">
+    <div className="container mt-4 narrow-container">
+      <h3 className="page-title">Lisa postitus</h3>
+      <input ref={titleRef} placeholder="Pealkiri" className="form-control" />
+      <input ref={bodyRef} placeholder="Sisu" className="form-control" />
+      <select ref={userRef} className="form-select">
         {users.map(user => (
           <option key={user.id} value={user.id}>{user.name}</option>
         ))}
       </select>
-
       <button onClick={addPost} className="btn btn-success">Lisa</button>
       <ToastContainer position="bottom-right" />
     </div>
@@ -55,4 +53,5 @@ function AddPost() {
 }
 
 export default AddPost;
+
 

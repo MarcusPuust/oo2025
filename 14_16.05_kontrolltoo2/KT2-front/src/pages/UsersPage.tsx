@@ -32,10 +32,10 @@ function UsersPage() {
   };
 
   return (
-    <div className="container mt-4" style={{ maxWidth: "600px" }}>
-      <h3>Kasutajad</h3>
+    <div className="container mt-4 narrow-container">
+      <h3 className="page-title">Kasutajad</h3>
 
-      <div className="mb-3">
+      <div>
         <label className="form-label">Nimi</label>
         <input ref={nameRef} type="text" className="form-control" />
       </div>
@@ -44,7 +44,7 @@ function UsersPage() {
 
       <ul className="list-group">
         {users.map(user => (
-          <li key={user.id} className="list-group-item d-flex justify-content-between">
+          <li key={user.id} className="list-group-item">
             <span>{user.name}</span>
             <Link to={`/user/${user.id}`} className="btn btn-primary btn-sm">Vaata postitusi</Link>
           </li>
@@ -57,3 +57,4 @@ function UsersPage() {
 }
 
 export default UsersPage;
+

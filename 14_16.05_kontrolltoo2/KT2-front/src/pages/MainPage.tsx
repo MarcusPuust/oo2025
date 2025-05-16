@@ -29,17 +29,16 @@ function MainPage() {
   };
 
   return (
-    <div className="container mt-4">
-      <h3>Postitused</h3>
-
+    <div className="container mt-4 narrow-container">
+      <h3 className="page-title">Postitused</h3>
       <input
         ref={inputRef}
         onChange={handleSearchChange}
-        className="form-control mb-3"
+        className="form-control"
         placeholder="Otsi pealkirja järgi..."
       />
 
-      <div className="mb-3 d-flex align-items-center gap-3 flex-wrap">
+      <div className="d-flex align-items-center gap-3 flex-wrap mb-3">
         <label htmlFor="sizeSelect">Postitusi lehel:</label>
         <select
           ref={sizeRef}
@@ -90,6 +89,7 @@ function MainPage() {
 }
 
 export default MainPage;
+
 
 
 
