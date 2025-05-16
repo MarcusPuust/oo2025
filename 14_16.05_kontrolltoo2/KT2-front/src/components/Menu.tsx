@@ -7,9 +7,11 @@ function Menu() {
       <div className="navbar-nav">
         <Link className="nav-link" to="/">Avaleht</Link>
         <Link className="nav-link" to="/add">Lisa postitus</Link>
+        <Link className="nav-link" to="/users">Kasutajad</Link> {/* ← Lisatud */}
       </div>
     </nav>
   );
 }
 
 export default Menu;
+

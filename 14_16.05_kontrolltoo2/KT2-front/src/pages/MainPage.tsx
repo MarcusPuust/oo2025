@@ -66,6 +66,17 @@ function MainPage() {
           <Link to={`/post/${post.id}`}>
             <button className="btn btn-sm btn-primary ms-2">Vaata</button>
           </Link>
+          <br />
+          <small>
+            Kasutaja:{" "}
+            {post.user ? (
+              <Link to={`/user/${post.user.id}`}>
+                <button className="btn btn-sm btn-outline-secondary ms-1">{post.user.name}</button>
+              </Link>
+            ) : (
+              <span className="text-muted">määramata</span>
+            )}
+          </small>
         </div>
       ))}
 
@@ -79,5 +90,6 @@ function MainPage() {
 }
 
 export default MainPage;
+
 
 

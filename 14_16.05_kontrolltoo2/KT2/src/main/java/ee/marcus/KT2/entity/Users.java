@@ -4,17 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class Post {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String body;
-
-    @ManyToOne
-    private Users user;
+    private String name;
 }
